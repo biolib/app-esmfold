@@ -34,3 +34,4 @@ COPY esmfold_3B_v1.pt /root/.cache/torch/hub/checkpoints/esmfold_3B_v1.pt
 COPY esm2_t36_3B_UR50D.pt /root/.cache/torch/hub/checkpoints/esm2_t36_3B_UR50D.pt
 COPY esm2_t36_3B_UR50D-contact-regression.pt /root/.cache/torch/hub/checkpoints/esm2_t36_3B_UR50D-contact-regression.pt
 COPY run.py run.py
+COPY example.fasta example.fasta
