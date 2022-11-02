@@ -2,7 +2,7 @@ biolib_version: 2
 modules:
     main:
         image: 'local-docker://esm-fold:latest'
-        command: python3 root.py
+        command: python3 run.py
         working_directory: /home/biolib/
         input_files:
             - COPY / /home/biolib/
@@ -12,9 +12,30 @@ modules:
 main_output_file: /output.md
 arguments:
     -
-        key: '--fasta-file'
+        key: '--fasta'
         key_value_separator: ' '
         default_value: ''
         description: 'Input FASTA file'
         required: true
         type: text-file
+    -
+        key: '--pdb'
+        key_value_separator: ' '
+        default_value: '/home/biolib/output/'
+        description: 'Output PDB file'
+        required: true
+        type: hidden
+    -
+        key: '--num-recycles'
+        key_value_separator: ' '
+        default_value: '4'
+        description: 'Number of recycles to run. Defaults to number used in training (4).'
+        required: true
+        type: number
+    -
+        key: '--max-tokens-per-batch'
+        key_value_separator: ' '
+        default_value: '0'
+        description: 'Max number of tokens per gpu forward-pass. '
+        required: true
+        type: hidden
