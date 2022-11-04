@@ -27,6 +27,7 @@ RUN pip install 'dllogger @ git+https://github.com/NVIDIA/dllogger.git'
 RUN pip install 'openfold @ git+https://github.com/aqlaboratory/openfold.git@4b41059694619831a7db195b7e0988fc4ff3a307'
 RUN pip install -q urllib3==1.23 pandas tabulate biotite biopython
 RUN pip install omegaconf
+#RUN pip install torchvision -f https://data.pyg.org/whl/torch-1.10.0+cu111.html
 
 
 WORKDIR /home/biolib

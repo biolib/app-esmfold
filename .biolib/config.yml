@@ -14,7 +14,7 @@ arguments:
     -
         key: '--fasta'
         key_value_separator: ' '
-        default_value: ''
+        default_value: 'example.fasta'
         description: 'Input FASTA file'
         required: true
         type: text-file

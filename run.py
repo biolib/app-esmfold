@@ -27,7 +27,7 @@ logger.addHandler(console_handler)
 PathLike = T.Union[str, Path]
 
 import os 
-os.mkdir("/home/biolib/output/")
+os.makedirs("/home/biolib/output/", exist_ok=True)
 
 def enable_cpu_offloading(model):
     from torch.distributed.fsdp import CPUOffload, FullyShardedDataParallel
@@ -162,8 +162,8 @@ if __name__ == "__main__":
 
                 continue
             raise
-
-        output = {key: value.cpu() for key, value in output.items()}
+        outfile = open("output.json", "w")
+        output = {key: value.cpu() for key, value in output.items()}    
         pdbs = model.output_to_pdb(output)
         tottime = timer() - start
         time_string = f"{tottime / len(headers):0.1f}s"
@@ -174,9 +174,30 @@ if __name__ == "__main__":
         ):
             output_file = args.pdb / f"{header}.pdb"
             output_file.write_text(pdb_string)
+            
             num_completed += 1
             logger.info(
                 f"Predicted structure for {header} with length {len(seq)}, pLDDT {mean_plddt:0.1f}, "
                 f"pTM {ptm:0.3f} in {time_string}. "
                 f"{num_completed} / {num_sequences} completed."
             )
+        from collections import defaultdict
+        avg_dict =  defaultdict(dict)
+        for i in range(len(headers)):
+            mean_plddt = output["mean_plddt"]
+            ptm = output["ptm"]
+
+            # Write json with avg plddt avg ptm length 
+            avg_dict[i]["header"] = headers[i]
+            avg_dict[i]["length"]= len(sequences[i])
+            avg_dict[i]["pLDDT"]= f"{mean_plddt[i]:0.1f}"
+            avg_dict[i]["pTM"] = f"{ptm[i]:0.3f}"
+            
+        # Serializing json
+        import json
+        print(avg_dict)
+        json_object = json.dumps(avg_dict, indent=4)
+        
+        # Writing to sample.json
+        outfile.write(json_object)
+        outfile.close()
